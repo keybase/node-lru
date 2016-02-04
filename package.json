@@ -1,0 +1,30 @@
+{
+  "name": "kb-js-lru",
+  "version": "1.0.0",
+  "description": "A simple JavaScript LRU",
+  "main": "index.js",
+  "scripts": {
+    "test": "make && make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keybase/js-lru.git"
+  },
+  "keywords": [
+    "lru",
+    "cache"
+  ],
+  "author": "Keybase",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keybase/js-lru/issues"
+  },
+  "homepage": "https://github.com/keybase/js-lru#readme",
+  "devDependencies": {
+    "iced-coffee-script": "^108.0.9",
+    "iced-test": "0.0.22"
+  },
+  "dependencies": {
+    "iced-runtime": "^1.0.3"
+  }
+}
