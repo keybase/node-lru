@@ -1,5 +1,5 @@
 {
-  "name": "kb-js-lru",
+  "name": "kb-node-lru",
   "version": "1.0.0",
   "description": "A simple JavaScript LRU",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keybase/js-lru.git"
+    "url": "git+https://github.com/keybase/node-lru.git"
   },
   "keywords": [
     "lru",
@@ -17,9 +17,9 @@
   "author": "Keybase",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/keybase/js-lru/issues"
+    "url": "https://github.com/keybase/node-lru/issues"
   },
-  "homepage": "https://github.com/keybase/js-lru#readme",
+  "homepage": "https://github.com/keybase/node-lru#readme",
   "devDependencies": {
     "iced-coffee-script": "^108.0.9",
     "iced-test": "0.0.22"
