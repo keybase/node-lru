@@ -29,33 +29,35 @@
       this.used_storage = 0;
     }
 
-    LRU.prototype.log_me = function() {
+    LRU.prototype.logMe = function() {
 
       /*
-      Useful just for running some tests/debugging/hunting for mem leaks
+      Useful just for running some tests/debugging/hunting
        */
-      var h, items, k, t, v, _ref;
+      var h, items, k, str, t, v, _ref;
+      str = "";
       items = [];
       _ref = this.item_lookup;
       for (k in _ref) {
         v = _ref[k];
         items.push("" + k + "=" + v.v);
       }
-      console.log("I: " + items.join(", "));
+      str += "I: " + items.join(", ") + "\n";
       h = this.head;
       items = [];
       while (h != null) {
         items.push("" + h.k + "=" + h.v);
         h = h.n;
       }
-      console.log("H: " + items.join("->"));
+      str += "H: " + items.join("->") + "\n";
       items = [];
       t = this.tail;
       while (t) {
         items.push("" + t.k + "=" + t.v);
         t = t.p;
       }
-      return console.log("T: " + items.join("<-"));
+      str += "T: " + items.join("<-") + "\n";
+      return str;
     };
 
     LRU.prototype.put = function(k, v) {

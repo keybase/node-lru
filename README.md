@@ -13,7 +13,8 @@ cache2 = new LRU {max_age_ms: 10000, max_storage: 100, size_fn: (o) -> o.kilobyt
 cache3 = new LRU {max_age_ms: 10000, max_storage: 100}
 
 cache2.put 'foo', some_object
-cache2.get 'foo'
-cache2.has 'foo' # true
-cache2.toArray()
+cache2.get 'foo'  # some_object
+cache2.has 'foo'  # true
+cache2.toArray()  # an array of objects with keys and access times
+cache2.logMe()    # returns big string for debugging
 ```

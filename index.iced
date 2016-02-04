@@ -29,26 +29,28 @@ class LRU
     @head = @tail = undefined
     @used_storage = 0
 
-  log_me: ->
+  logMe: ->
     ###
-    Useful just for running some tests/debugging/hunting for mem leaks
+    Useful just for running some tests/debugging/hunting
     ###
+    str = ""
     items = []
     for k,v of @item_lookup
       items.push "#{k}=#{v.v}"
-    console.log "I: " + items.join ", "
+    str += "I: " + items.join(", ") + "\n"
     h = @head
     items = []
     while h?
       items.push "#{h.k}=#{h.v}"
       h = h.n
-    console.log "H: " + items.join "->"
+    str += "H: " + items.join("->") + "\n"
     items = []
     t = @tail
     while t
       items.push "#{t.k}=#{t.v}"
       t = t.p
-    console.log "T: " + items.join "<-"
+    str += "T: " + items.join("<-") + "\n"
+    str
 
   put: (k, v) ->
     @maybePurge()

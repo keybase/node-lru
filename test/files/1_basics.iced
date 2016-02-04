@@ -56,3 +56,18 @@ exports.dynamic_storage = (T, cb) ->
   T.assert (lru.get 'man'),                   'man stuck around'
   T.assert (lru.get 'bob'),                   'bob stuck around'
   cb()
+
+exports.printing = (T, cb) ->
+  lru = new LRU {max_age_ms: 1000, max_storage: 3}
+  for k,v of OBJ
+    lru.put k, v
+    T.equal v, lru.get(k)
+  logme = lru.logMe()
+  expected = """
+I: dog=[object Object], man=[object Object], bob=[object Object]
+H: dog=[object Object]->man=[object Object]->bob=[object Object]
+T: bob=[object Object]<-man=[object Object]<-dog=[object Object]
+
+"""
+  T.assert (logme is expected), 'expected log'
+  cb()
