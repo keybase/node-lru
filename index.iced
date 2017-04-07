@@ -20,10 +20,13 @@ class Item
 
 class LRU
   constructor: (options) ->
-    {max_storage, max_age_ms, size_fn} = options or {}
-    @max_storage  = max_storage or Infinity
-    @max_age_ms   = max_age_ms  or Infinity
-    @size_fn      = size_fn     or -> 1
+    unless ((typeof options?.max_storage) is 'number') and options.max_storage > 0
+      throw new Error "max_storage > 0 expected; Infinity is ok"
+    unless ((typeof options?.max_age_ms) is 'number') and options.max_age_ms  > 0
+      throw new Error "max_age_ms > 0 expected; Infinity is ok"
+
+    {@max_storage, @max_age_ms, @size_fn} = options
+    @size_fn      or= -> 1
 
     @item_lookup = {}
     @head = @tail = undefined

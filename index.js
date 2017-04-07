@@ -17,13 +17,16 @@
 
   LRU = (function() {
     function LRU(options) {
-      var max_age_ms, max_storage, size_fn, _ref;
-      _ref = options || {}, max_storage = _ref.max_storage, max_age_ms = _ref.max_age_ms, size_fn = _ref.size_fn;
-      this.max_storage = max_storage || Infinity;
-      this.max_age_ms = max_age_ms || Infinity;
-      this.size_fn = size_fn || function() {
+      if (!(((typeof (options != null ? options.max_storage : void 0)) === 'number') && options.max_storage > 0)) {
+        throw new Error("max_storage > 0 expected; Infinity is ok");
+      }
+      if (!(((typeof (options != null ? options.max_age_ms : void 0)) === 'number') && options.max_age_ms > 0)) {
+        throw new Error("max_age_ms > 0 expected; Infinity is ok");
+      }
+      this.max_storage = options.max_storage, this.max_age_ms = options.max_age_ms, this.size_fn = options.size_fn;
+      this.size_fn || (this.size_fn = function() {
         return 1;
-      };
+      });
       this.item_lookup = {};
       this.head = this.tail = void 0;
       this.used_storage = 0;
