@@ -128,6 +128,7 @@ class LRU
     else             # last remaining item
       @head = undefined
       @tail = undefined
+    e.n = e.p = undefined
     e.v
 
   has: (k) ->
