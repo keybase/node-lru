@@ -6,7 +6,8 @@
   "scripts": {
     "modules": "yarn --frozen-lockfile --prefer-offline",
     "modules-prod": "yarn --frozen-lockfile --prefer-offline --prod",
-    "dev": "tsc --watch",
+    "clean": "rm -rf lib/",
+    "dev": "yarn clean && tsc",
     "test": "jest --runInBand"
   },
   "repository": {

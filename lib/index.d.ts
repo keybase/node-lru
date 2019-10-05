@@ -1,29 +1,31 @@
-declare class Item {
-  key: string
-  value: any
-  prev?: Item
-  next?: Item
-  added: number
-  size: number
-  constructor(key: string, value: any, size?: number)
-}
-declare class ItemExported {
-  key: string
-  value: any
-  added: number
-  size: number
-  constructor(item: Item)
-}
+declare type ItemValue = any
+declare type SizeArg = any
 interface ItemExported {
   key: string
-  value: any
+  value: ItemValue
 }
 interface LruCreationArg {
   maxStorage: number
   maxAgeMs: number
   sizeFn?: SizeFn
 }
-declare type SizeFn = (o: any) => number
+declare class Item {
+  key: string
+  value: ItemValue
+  prev?: Item
+  next?: Item
+  added: number
+  size: number
+  constructor(key: string, value: ItemValue, size?: number)
+}
+declare class ItemExported {
+  key: string
+  value: ItemValue
+  added: number
+  size: number
+  constructor(item: Item)
+}
+declare type SizeFn = (o: SizeArg) => number
 declare class LRU {
   maxStorage: number
   maxAgeMs: number
@@ -34,11 +36,11 @@ declare class LRU {
   usedStorage: number
   constructor(opts: LruCreationArg)
   has(k: string): boolean
-  put(k: string, v: any): void
+  put(k: string, v: ItemValue): void
   private maybePurge
   private purgeHead
-  get(k: string): any
-  remove(k: string): any
+  get(k: string): ItemValue
+  remove(k: string): ItemValue
   logMe(): string
   size(): number
   toArray(): ItemExported[]

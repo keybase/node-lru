@@ -1,5 +1,3 @@
-import {isMetaProperty, isTSExpressionWithTypeArguments} from '@babel/types'
-
 //
 // LRU with support for:
 //    - max_storage:
@@ -14,14 +12,30 @@ import {isMetaProperty, isTSExpressionWithTypeArguments} from '@babel/types'
 //
 // ----------------------------------------------------------------------------------
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ItemValue = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SizeArg = any
+
+interface ItemExported {
+  key: string
+  value: ItemValue
+}
+
+interface LruCreationArg {
+  maxStorage: number
+  maxAgeMs: number
+  sizeFn?: SizeFn
+}
+
 class Item {
   key: string
-  value: any
+  value: ItemValue
   prev?: Item
   next?: Item
   added: number
   size: number
-  constructor(key: string, value: any, size?: number) {
+  constructor(key: string, value: ItemValue, size?: number) {
     this.prev = undefined
     this.next = undefined
     this.added = Date.now()
@@ -32,7 +46,7 @@ class Item {
 }
 class ItemExported {
   key: string
-  value: any
+  value: ItemValue
   added: number
   size: number
   constructor(item: Item) {
@@ -43,18 +57,7 @@ class ItemExported {
   }
 }
 
-interface ItemExported {
-  key: string
-  value: any
-}
-
-interface LruCreationArg {
-  maxStorage: number
-  maxAgeMs: number
-  sizeFn?: SizeFn
-}
-
-type SizeFn = (o: any) => number
+type SizeFn = (o: SizeArg) => number
 
 class LRU {
   maxStorage: number
@@ -76,7 +79,7 @@ class LRU {
     }
     this.maxStorage = opts.maxStorage
     this.maxAgeMs = opts.maxAgeMs
-    this.sizeFn = opts.sizeFn || ((o: any) => 1)
+    this.sizeFn = opts.sizeFn || ((): number => 1)
     this.itemLookup = new Map()
     this.head = undefined
     this.tail = undefined
@@ -97,8 +100,8 @@ class LRU {
     }
   }
 
-  public put(k: string, v: any) {
-    this.maybePurge()
+  public put(k: string, v: ItemValue): void {
+    // maybePurge called by .has
     if (this.has(k)) {
       this.remove(k)
     }
@@ -112,7 +115,6 @@ class LRU {
     }
     this.tail = item
     this.usedStorage += item.size
-    this.maybePurge()
   }
 
   private maybePurge(): void {
@@ -138,7 +140,7 @@ class LRU {
     }
   }
 
-  public get(k: string): any {
+  public get(k: string): ItemValue {
     this.maybePurge()
     const item = this.itemLookup.get(k)
     if (!item) {
@@ -168,7 +170,7 @@ class LRU {
     return item.value
   }
 
-  public remove(k: string): any {
+  public remove(k: string): ItemValue {
     const item = this.itemLookup.get(k)
     if (item) {
       this.usedStorage -= item.size
@@ -190,6 +192,8 @@ class LRU {
         this.head = undefined
         this.tail = undefined
       }
+    } else {
+      return undefined
     }
     item.next = undefined
     item.prev = undefined
@@ -199,7 +203,7 @@ class LRU {
   public logMe(): string {
     let str = ''
     let items: string[] = []
-    this.itemLookup.forEach((v: any, k: string): void => {
+    this.itemLookup.forEach((v: ItemValue, k: string): void => {
       items.push(`${k}=${v.value}`)
     })
     str += `I: ${items.join(', ')}\n`
