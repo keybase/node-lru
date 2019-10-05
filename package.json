@@ -8,7 +8,8 @@
     "modules-prod": "yarn --frozen-lockfile --prefer-offline --prod",
     "clean": "rm -rf lib/",
     "dev": "yarn clean && tsc",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "memtest": "node --expose-gc lib/memory-explore-demo.js"
   },
   "repository": {
     "type": "git",

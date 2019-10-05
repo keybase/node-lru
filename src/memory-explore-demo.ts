@@ -15,7 +15,7 @@ async function main(): Promise<void> {
     console.log('Run this test with --expose-gc')
     process.exit(1)
   }
-  const INSERTS = 1 * 1000 * 1000
+  const INSERTS = 5 * 1000 * 1000
   const lru = new LRU({maxAgeMs: Infinity, maxStorage: Infinity})
 
   function printUsage(stage: string, ms: number): void {
@@ -28,7 +28,7 @@ async function main(): Promise<void> {
 
   let d = Date.now()
   for (let i = 0; i < INSERTS; i++) {
-    lru.put(`x${i}`, `y${i}`)
+    lru.put(`x${i}`, true)
   }
   let dt = Date.now() - d
   global.gc()
