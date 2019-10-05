@@ -236,4 +236,4 @@ class LRU {
   }
 }
 
-export default LRU
+export = LRU

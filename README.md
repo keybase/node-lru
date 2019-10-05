@@ -2,11 +2,10 @@
 
 Simple JS LRU, now in TypeScript
 
-TODO:
+TODO in this branch
 
 1. memory checks with good key names
-2. get tests working
-3. update below examples
+2. update below examples
 
 ```
 npm install kb-node-lru

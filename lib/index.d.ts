@@ -43,4 +43,4 @@ declare class LRU {
   size(): number
   toArray(): ItemExported[]
 }
-export default LRU
+export = LRU
