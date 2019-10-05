@@ -15,7 +15,7 @@ declare class Item {
   prev?: Item
   next?: Item
   added: number
-  size: number
+  size?: number
   constructor(key: string, value: ItemValue, size?: number)
 }
 declare class ItemExported {
@@ -29,7 +29,7 @@ declare type SizeFn = (o: SizeArg) => number
 declare class LRU {
   maxStorage: number
   maxAgeMs: number
-  sizeFn: SizeFn
+  sizeFn?: SizeFn
   itemLookup: Map<string, Item>
   head?: Item
   tail?: Item

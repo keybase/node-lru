@@ -17,29 +17,36 @@ async function main(): Promise<void> {
   }
   const INSERTS = 5 * 1000 * 1000
   const lru = new LRU({maxAgeMs: Infinity, maxStorage: Infinity})
-
   function printUsage(stage: string, ms: number): void {
     const heapUsedMb = process.memoryUsage().heapUsed / (1024 * 1024)
     const heapTotalMb = process.memoryUsage().heapTotal / (1024 * 1024)
     console.log(`${ms}ms`, `SIZE=${lru.size()}`, stage, {heapUsedMb, heapTotalMb})
   }
-
   printUsage('startup', 0)
 
-  let d = Date.now()
-  for (let i = 0; i < INSERTS; i++) {
-    lru.put(`x${i}`, true)
+  async function addTest(): Promise<void> {
+    const d = Date.now()
+    for (let i = 0; i < INSERTS; i++) {
+      lru.put(`x${i}`, true)
+    }
+    const dt = Date.now() - d
+    global.gc()
+    printUsage('inserts', dt)
   }
-  let dt = Date.now() - d
-  global.gc()
-  printUsage('inserts', dt)
-
-  d = Date.now()
-  for (let i = 0; i < INSERTS; i++) {
-    lru.remove(`x${i}`)
+  async function removeTest(): Promise<void> {
+    const d = Date.now()
+    for (let i = 0; i < INSERTS; i++) {
+      lru.remove(`x${i}`)
+    }
+    const dt = Date.now() - d
+    global.gc()
+    printUsage('removals', dt)
   }
-  dt = Date.now() - d
-  global.gc()
-  printUsage('removals', dt)
+  while (true) {
+    await addTest()
+    await removeTest()
+    await addTest()
+    await removeTest()
+  }
 }
 main()

@@ -34,14 +34,16 @@ class Item {
   prev?: Item
   next?: Item
   added: number
-  size: number
+  size?: number
   constructor(key: string, value: ItemValue, size?: number) {
     this.prev = undefined
     this.next = undefined
     this.added = Date.now()
-    this.size = size || 1
     this.key = key
     this.value = value
+    if (size) {
+      this.size = size
+    }
   }
 }
 class ItemExported {
@@ -53,7 +55,7 @@ class ItemExported {
     this.key = item.key
     this.value = item.value
     this.added = item.added
-    this.size = item.size
+    this.size = item.size || 1
   }
 }
 
@@ -62,7 +64,7 @@ type SizeFn = (o: SizeArg) => number
 class LRU {
   maxStorage: number
   maxAgeMs: number
-  sizeFn: SizeFn
+  sizeFn?: SizeFn
   itemLookup: Map<string, Item>
   head?: Item
   tail?: Item
@@ -79,7 +81,7 @@ class LRU {
     }
     this.maxStorage = opts.maxStorage
     this.maxAgeMs = opts.maxAgeMs
-    this.sizeFn = opts.sizeFn || ((): number => 1)
+    this.sizeFn = opts.sizeFn
     this.itemLookup = new Map()
     this.head = undefined
     this.tail = undefined
@@ -105,7 +107,7 @@ class LRU {
     if (this.has(k)) {
       this.remove(k)
     }
-    const item: Item = new Item(k, v, this.sizeFn(v))
+    const item = this.sizeFn ? new Item(k, v, this.sizeFn(v)) : new Item(k, v)
     this.itemLookup.set(k, item)
     if (this.tail) {
       this.tail.next = item
@@ -114,7 +116,7 @@ class LRU {
       this.head = item
     }
     this.tail = item
-    this.usedStorage += item.size
+    this.usedStorage += item.size || 1
   }
 
   private maybePurge(): void {
@@ -124,19 +126,19 @@ class LRU {
     }
   }
   private purgeHead(): void {
-    const e = this.head
-    if (e) {
-      this.usedStorage -= e.size
-      if (e.next) {
-        this.head = e.next
+    const item = this.head
+    if (item) {
+      this.usedStorage -= item.size || 1
+      if (item.next) {
+        this.head = item.next
         this.head.prev = undefined
       } else {
         this.head = undefined
         this.tail = undefined
       }
-      e.next = undefined
-      e.prev = undefined
-      this.itemLookup.delete(e.key)
+      item.next = undefined
+      item.prev = undefined
+      this.itemLookup.delete(item.key)
     }
   }
 
@@ -173,7 +175,7 @@ class LRU {
   public remove(k: string): ItemValue {
     const item = this.itemLookup.get(k)
     if (item) {
-      this.usedStorage -= item.size
+      this.usedStorage -= item.size || 1
       this.itemLookup.delete(k)
       if (item.next && item.prev) {
         // middle
