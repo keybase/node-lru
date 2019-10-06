@@ -26,3 +26,10 @@ cache2.remove('foo') // removes it
 cache2.toArray() // an array of objects with keys and access times
 cache2.logMe() // returns big string for debugging
 ```
+
+### Contributing
+
+- run `yarn modules` to install necessary dev modules
+- run `yarn dev --watch` to watch typescript and compile while working
+- run `yarn test` to make sure it passes all tests
+- run `yarn memtest` to watch how much memory it uses with repeated large LRU creation/removals
