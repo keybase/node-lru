@@ -1,10 +1,15 @@
 {
   "name": "kb-node-lru",
-  "version": "2.0.2",
-  "description": "A simple JavaScript LRU",
-  "main": "index.js",
+  "version": "3.0.0",
+  "description": "A simple JavaScript+Typescript LRU Cache",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "make && make test"
+    "modules": "yarn --frozen-lockfile --prefer-offline",
+    "modules-prod": "yarn --frozen-lockfile --prefer-offline --prod",
+    "clean": "rm -rf lib/",
+    "dev": "yarn clean && tsc",
+    "test": "jest --runInBand",
+    "memtest": "node --expose-gc lib/memory-explore-demo.js"
   },
   "repository": {
     "type": "git",
@@ -14,6 +19,23 @@
     "lru",
     "cache"
   ],
+  "files": [
+    "lib/*"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix"
+    ],
+    "*.{json,md,ts}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "author": "Keybase",
   "license": "ISC",
   "bugs": {
@@ -21,10 +43,21 @@
   },
   "homepage": "https://github.com/keybase/node-lru#readme",
   "devDependencies": {
-    "iced-coffee-script": "^108.0.9",
-    "iced-test": "0.0.22"
-  },
-  "dependencies": {
-    "iced-runtime": "^1.0.3"
+    "@types/jest": "^24.0.18",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.0.8",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.1",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
   }
 }
