@@ -36,8 +36,6 @@ class Item {
   added: number
   size?: number
   constructor(key: string, value: ItemValue, size?: number) {
-    this.prev = undefined
-    this.next = undefined
     this.added = Date.now()
     this.key = key
     this.value = value
@@ -87,6 +85,12 @@ class LRU {
     this.tail = undefined
     this.usedStorage = 0
   }
+
+  public size(): number {
+    this.maybePurge()
+    return this.usedStorage
+  }
+
   public has(k: string): boolean {
     this.maybePurge()
     const e = this.itemLookup.get(k)
@@ -224,10 +228,6 @@ class LRU {
     }
     str += `T: ${items.join('<-')}\n`
     return str
-  }
-
-  public size(): number {
-    return this.usedStorage
   }
 
   public toArray(): ItemExported[] {

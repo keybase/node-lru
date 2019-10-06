@@ -35,6 +35,7 @@ declare class LRU {
   tail?: Item
   usedStorage: number
   constructor(opts: LruCreationArg)
+  size(): number
   has(k: string): boolean
   put(k: string, v: ItemValue): void
   private maybePurge
@@ -42,7 +43,6 @@ declare class LRU {
   get(k: string): ItemValue
   remove(k: string): ItemValue
   logMe(): string
-  size(): number
   toArray(): ItemExported[]
 }
 export = LRU
