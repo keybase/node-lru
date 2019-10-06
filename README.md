@@ -1,26 +1,28 @@
 # kb-node-lru
 
-Simple JS LRU, now in TypeScript
-
-TODO in this branch
-
-1. memory checks with good key names
-2. update below examples
+Simple JS LRU Cache, v3.0.0+ now written in TypeScript.
 
 ```
 npm install kb-node-lru
 ```
 
-```coffeescript
-LRU = require 'kb-node-lru'
+```javascript
+import LRU from 'kb-node-lru'
 
-cache1 = new LRU {max_age_ms: 10000, max_storage: 100}
-cache2 = new LRU {max_age_ms: 10000, max_storage: 100, size_fn: (o) -> o.kilobytes_or_whatever() }
-cache3 = new LRU {max_age_ms: Infinity, max_storage: Infinity}
+const cache1 = new LRU({maxAgeMs: 10000, maxStorage: 100})
+const cache2 = new LRU({
+  maxAgeMs: 10000,
+  maxStorage: 100,
+  sizeFn: o => {
+    o.kilobytes_or_whatever()
+  },
+})
+const cache3 = new LRU({maxAgeMs: Infinity, maxStorage: Infinity})
 
-cache2.put 'foo', some_object
-cache2.get 'foo'  # some_object
-cache2.has 'foo'  # true
-cache2.toArray()  # an array of objects with keys and access times
-cache2.logMe()    # returns big string for debugging
+cache2.put('foo', someObject)
+cache2.get('foo') // someObject
+cache2.has('foo') // true
+cache2.remove('foo') // removes it
+cache2.toArray() // an array of objects with keys and access times
+cache2.logMe() // returns big string for debugging
 ```
